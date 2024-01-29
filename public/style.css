@@ -1,0 +1,53 @@
+.chatbox
+{
+    background-color: rgb(133, 235, 253);
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    border-radius: 10px;
+
+    h2
+    {
+        font-family: monospace;
+    }
+
+    #messages
+    {
+        overflow-y: auto;
+        background-color: rgb(255, 252, 230);
+        width: 300px;
+        height: 150px;
+        border-radius: 10px;
+        padding: 5px;
+        list-style: none;
+    }
+
+    p
+    {
+        background-color: rgb(171, 255, 255);
+        border-radius: 15px;
+        padding: 5px;
+    }
+
+    button
+    {
+        position: fixed;
+        right: 10px;
+        background-color: lightcyan;
+        border-radius: 10px;
+        border-color: rgb(4, 0, 216);
+        border-style:solid;
+        color:rgb(0, 0, 0);
+    }
+    button:hover
+    {
+        background-color: cyan;
+    }
+
+    input
+    {
+        border-radius: 10px;
+    }
+}
+

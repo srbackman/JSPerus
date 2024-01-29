@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <p>asda</p><br>
+        <div class="chatbox">
+            <center><h2>Chat</h2></center>
+            <ul id="messages"></ul>
+            <form id='form' action=''>
+                <input id='input' autocomplete='off'><button>Send</button>
+            </form>
+        </div>
+    </body>
+    <footer>
+
+    </footer>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        //Chatti boxi
+        var user = window.prompt("Anna nimesi");
+        const socket = io();
+
+        socket.emit('chat message', user + " liityi keskusteluun.");
+
+        const form = document.getElementById('form');
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+
+        form.addEventListener('submit', (e) =>
+        {
+            e.preventDefault();
+            
+            if (input.value)
+            {
+                socket.emit('chat message',GetCurrentTime() + " " + "Käyttäjä: " + user +": " + input.value);
+                input.value = '';
+            }
+        });
+
+        socket.on('chat message', (msg) =>
+        {
+            const listItem = document.createElement('li');
+            const paragraphItem = document.createElement('p');
+            paragraphItem.textContent = msg;
+            listItem.appendChild(paragraphItem);
+            messages.appendChild(listItem);
+            messages.scrollTo(0, messages.scrollHeight);
+            $(item).hide();
+            $(item).fadeIn(200);
+        });
+
+        //Functions
+        function GetCurrentTime()
+        {
+            var d = new Date();
+            var years = d.getFullYear();
+            var months = (d.getMonth() + 1);
+            var days = d.getDate();
+            var hours = d.getHours();
+            var minutes = d.getMinutes()
+
+            if ((months / 10) < 1)
+            {
+                months = "0" + months;
+            }
+            if ((days / 10) < 1)
+            {
+                days = "0" + days;
+            }
+            if ((hours / 10) < 1)
+            {
+                hours = "0" + hours;
+            }
+            if ((minutes / 10) < 1)
+            {
+                minutes = "0" + minutes;
+            }
+
+            var time = years + "." + months + "." + days + " " + hours + ":" + minutes + " | ";
+            return time;
+        }
+
+    </script>
+</html>
