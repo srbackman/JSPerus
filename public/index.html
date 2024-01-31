@@ -71,7 +71,8 @@
                 try 
                 {
 
-                    const response = await fetch("http://localhost:3000/api/favgames");
+                    // const response = await fetch("http://localhost:3000/api/favgames");
+                    const response = await fetch("https://myfavgames.onrender.com/api/favgames");
                     const favGamesData = await response.json(); //json -> javascript
                     
                     await favGamesData.map(h => 
