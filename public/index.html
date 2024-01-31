@@ -4,33 +4,19 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <link rel="stylesheet" href="style.css">
+        <center>
+            <h1>My favorite games (at the moment)</h1>
+        </center>
     </head>
     <body>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
-        <p>asda</p><br>
+        <center>
+            <div class="favoritegames" id="favoritegames"></div>
+        </center>
         <div class="chatbox">
-            <center><h2>Chat</h2></center>
+            <center>
+                <h2>Chat</h2>
+                <h4>Tell others what are your favorite games and why you like them.</h4>
+            </center>
             <ul id="messages"></ul>
             <form id='form' action=''>
                 <input id='input' autocomplete='off'><button>Send</button>
@@ -43,10 +29,10 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         //Chatti boxi
-        var user = window.prompt("Anna nimesi");
+        var user = window.prompt("Give your user name");
         const socket = io();
 
-        socket.emit('chat message', user + " liityi keskusteluun.");
+        socket.emit('chat message', user + " joined the chat.");
 
         const form = document.getElementById('form');
         const input = document.getElementById('input');
@@ -58,7 +44,7 @@
             
             if (input.value)
             {
-                socket.emit('chat message',GetCurrentTime() + " " + "Käyttäjä: " + user +": " + input.value);
+                socket.emit('chat message',GetCurrentTime() + " " + user +": " + input.value);
                 input.value = '';
             }
         });
@@ -71,9 +57,36 @@
             listItem.appendChild(paragraphItem);
             messages.appendChild(listItem);
             messages.scrollTo(0, messages.scrollHeight);
-            $(item).hide();
-            $(item).fadeIn(200);
+            $(listItem).hide();
+            $(listItem).fadeIn(200);
         });
+
+        //Hae lempipelit
+        async function FetchFavoriteGamesData()
+            {
+                document.getElementById("favoritegames").innerHTML = "<h4>Loading</h4>";
+
+                var x = `<table><thead><th>Ranking</th><th>Game name</th><th>Why I like it</th></thead><tbody>`;
+
+                try 
+                {
+
+                    const response = await fetch("http://localhost:3000/api/favgames");
+                    const favGamesData = await response.json(); //json -> javascript
+                    
+                    await favGamesData.map(h => 
+                    {
+                        x += `<tr><td>${h.id}</td><td>${h.gamename}</td><td>${h.why}</td></tr>`;
+                    });
+                    
+                    x += `</tbody></table>`;
+                    document.getElementById("favoritegames").innerHTML = x;
+                }
+                catch (error)
+                {
+                    console.error("Error fetching data: ", error);
+                }
+            }
 
         //Functions
         function GetCurrentTime()
@@ -102,9 +115,10 @@
                 minutes = "0" + minutes;
             }
 
-            var time = years + "." + months + "." + days + " " + hours + ":" + minutes + " | ";
+            var time = days + "." + months + "." + years + " " + hours + ":" + minutes + " | ";
             return time;
         }
 
+        FetchFavoriteGamesData();
     </script>
 </html>

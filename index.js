@@ -8,23 +8,25 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
+const favgames = require('./FavoriteGames.json');
 
 app.use(express.static(polku));
-// app.get('/', (req, res) =>
-// {
-//     res.sendFile(join(__dirname, 'index.html'));
-// });
 
 io.on('connection', (socket) =>
 {
     //Kun palvelin saa viestin jakaa se sen kaikille.
     socket.on('chat message', (msg) =>
     {
-        io.emit('chat message', msg)
+        io.emit('chat message', msg);
     });
 });
 
 server.listen(PORT, () =>
 {
     console.log(`server started on port ${PORT}`);
+});
+
+app.get('/api/favgames', (req, res) =>
+{
+    res.json(favgames);
 });
